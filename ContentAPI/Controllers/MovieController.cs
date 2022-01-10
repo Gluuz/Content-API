@@ -1,5 +1,6 @@
 ﻿using ContentAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,19 @@ using System.Threading.Tasks;
 namespace ContentAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class MovieController : Controller
+    [Route("movies")]
+    public class MovieController : ControllerBase
     {
-        public static List<MovieModel> movies = new List<MovieModel>();
+        private static List<MovieModel> movies = new List<MovieModel>();
+        public MovieController()
+        {
+
+        }
 
         [HttpPost]
-        public void AddMovies([FromBody]MovieModel movie)
+        public void AddMovie([FromBody] MovieModel movie)
         {
             movies.Add(movie);
-            Console.WriteLine(movie.Title);
         }
     }
 }

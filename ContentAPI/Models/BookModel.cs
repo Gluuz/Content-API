@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace ContentAPI.Models
 {
-    public class MovieModel
+    public class BookModel
     {
         [Required(ErrorMessage = "Title is necessary")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Gender is necessary")]
         public string Gender { get; set; }
-        [Required(ErrorMessage = "Director is necessary")]
-        public string Director { get; set; }
-        [Range(1, 250, ErrorMessage = "Max 250 minutes")]
-        public int Duraction { get; set; }
+        [Required(ErrorMessage = "Gender is necessary")]
+        public string Writer { get; set; }
+        [Range(1, 5000, ErrorMessage = "Max is 5000 pages")]
+        public int Pages { get; set; }
     }
 }
