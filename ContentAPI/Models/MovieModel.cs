@@ -14,7 +14,7 @@ namespace ContentAPI.Models
         public string Gender { get; set; }
         [Required(ErrorMessage = "Director is necessary")]
         public string Director { get; set; }
-        [Range(1, 250, ErrorMessage = "Max 250 minutes")]
         public int Duraction { get; set; }
+        public int Id { get; internal set; }
     }
 }

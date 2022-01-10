@@ -12,16 +12,24 @@ namespace ContentAPI.Controllers
     [Route("movies")]
     public class MovieController : ControllerBase
     {
+        private static int Id;
         private static List<MovieModel> movies = new List<MovieModel>();
         public MovieController()
         {
 
         }
-
+        [Route("addMovies")]
         [HttpPost]
         public void AddMovie([FromBody] MovieModel movie)
         {
+            movie.Id = Id++;
             movies.Add(movie);
+        }
+        [Route("getMovies")]
+        [HttpGet]
+        public IEnumerable<MovieModel> GetMovies()
+        {
+            return movies;
         }
     }
 }
