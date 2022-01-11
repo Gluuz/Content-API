@@ -22,7 +22,7 @@ namespace ContentAPI.Controllers
 
         [Route("addMovie")]
         [HttpPost]
-        public IActionResult AddMovie([FromBody] MovieModel movie)
+        public IActionResult addMovie([FromBody] MovieModel movie)
         {
             _context.Movies.Add(movie);
             _context.SaveChanges();
@@ -31,7 +31,7 @@ namespace ContentAPI.Controllers
 
         [Route("getMovies")]
         [HttpGet]
-        public IEnumerable<MovieModel> GetMovies()
+        public IEnumerable<MovieModel> getMovies()
         {
             return _context.Movies;
         }
@@ -47,6 +47,37 @@ namespace ContentAPI.Controllers
             }
             return NotFound();
 
+        }
+
+        [Route("refreshMovie")]
+        [HttpPut]
+        public IActionResult refreshMovie(int id, [FromBody]MovieModel newMovie)
+        {
+            MovieModel movie = _context.Movies.FirstOrDefault(movie => movie.Id == id);
+            if(movie == null)
+            {
+                return NotFound();
+            }
+            movie.Title = newMovie.Title;
+            movie.Gender = newMovie.Gender;
+            movie.Director = newMovie.Director;
+            movie.Duration = newMovie.Duration;
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [Route("deleteMovie")]
+        [HttpDelete]
+        public IActionResult deleteMovie(int id)
+        {
+            MovieModel movie = _context.Movies.FirstOrDefault(movie => movie.Id == id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(movie);
+            _context.SaveChanges();
+            return NoContent();
         }
     }
 }

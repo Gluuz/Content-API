@@ -46,6 +46,37 @@ namespace ContentAPI.Controllers
             }
             return NotFound();
         }
-      
+
+        [Route("refreshBook")]
+        [HttpPut]
+        public IActionResult refreshMovie(int id, [FromBody] BookModel newBook)
+        {
+            BookModel book = _context.Books.FirstOrDefault(book => book.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            book.Title = newBook.Title;
+            book.Gender = newBook.Gender;
+            book.Writer = newBook.Writer;
+            book.Pages = newBook.Pages;
+            _context.SaveChanges();
+            return NoContent();
+        }
+        
+        [Route("deleteBook")]
+        [HttpDelete]
+        public IActionResult deleteBook(int id)
+        {
+            BookModel book = _context.Books.FirstOrDefault(book => book.Id == id);
+            if(book == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(book);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
     }
 }
