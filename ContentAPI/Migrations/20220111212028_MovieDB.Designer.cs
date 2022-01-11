@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ContentAPI.Migrations.Book
+namespace ContentAPI.Migrations
 {
-    [DbContext(typeof(BookContext))]
-    [Migration("20220111194134_BookTable")]
-    partial class BookTable
+    [DbContext(typeof(MovieContext))]
+    [Migration("20220111212028_MovieDB")]
+    partial class MovieDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,28 +18,30 @@ namespace ContentAPI.Migrations.Book
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.5");
 
-            modelBuilder.Entity("ContentAPI.Models.BookModel", b =>
+            modelBuilder.Entity("ContentAPI.Models.MovieModel", b =>
                 {
-                    b.Property<string>("Title")
-                        .HasColumnType("varchar(767)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Director")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Pages")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Writer")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Title");
+                    b.HasKey("Id");
 
-                    b.ToTable("Books");
+                    b.ToTable("Movies");
                 });
 #pragma warning restore 612, 618
         }

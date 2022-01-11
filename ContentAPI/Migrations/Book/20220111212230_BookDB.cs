@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.EntityFrameworkCore.Metadata;
 
 namespace ContentAPI.Migrations.Book
 {
-    public partial class BookTable : Migration
+    public partial class BookDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,15 +11,16 @@ namespace ContentAPI.Migrations.Book
                 name: "Books",
                 columns: table => new
                 {
-                    Title = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
                     Gender = table.Column<string>(type: "text", nullable: false),
                     Writer = table.Column<string>(type: "text", nullable: false),
-                    Pages = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Pages = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Books", x => x.Title);
+                    table.PrimaryKey("PK_Books", x => x.Id);
                 });
         }
 

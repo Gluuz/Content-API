@@ -18,24 +18,26 @@ namespace ContentAPI.Migrations.Book
 
             modelBuilder.Entity("ContentAPI.Models.BookModel", b =>
                 {
-                    b.Property<string>("Title")
-                        .HasColumnType("varchar(767)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("Pages")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Writer")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Title");
+                    b.HasKey("Id");
 
                     b.ToTable("Books");
                 });

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.EntityFrameworkCore.Metadata;
 
 namespace ContentAPI.Migrations
 {
-    public partial class CreatingMovieTable : Migration
+    public partial class MovieDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,15 +11,16 @@ namespace ContentAPI.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    Title = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
                     Gender = table.Column<string>(type: "text", nullable: false),
                     Director = table.Column<string>(type: "text", nullable: false),
-                    Duraction = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Duration = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movies", x => x.Title);
+                    table.PrimaryKey("PK_Movies", x => x.Id);
                 });
         }
 

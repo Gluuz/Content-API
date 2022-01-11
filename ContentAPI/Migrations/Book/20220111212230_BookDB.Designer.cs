@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ContentAPI.Migrations
+namespace ContentAPI.Migrations.Book
 {
-    [DbContext(typeof(MovieContext))]
-    [Migration("20220111191912_CreatingMovieTable")]
-    partial class CreatingMovieTable
+    [DbContext(typeof(BookContext))]
+    [Migration("20220111212230_BookDB")]
+    partial class BookDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,28 +18,30 @@ namespace ContentAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.5");
 
-            modelBuilder.Entity("ContentAPI.Models.MovieModel", b =>
+            modelBuilder.Entity("ContentAPI.Models.BookModel", b =>
                 {
-                    b.Property<string>("Title")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<string>("Director")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Duraction")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("Pages")
                         .HasColumnType("int");
 
-                    b.HasKey("Title");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.ToTable("Movies");
+                    b.Property<string>("Writer")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Books");
                 });
 #pragma warning restore 612, 618
         }

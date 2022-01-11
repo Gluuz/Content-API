@@ -9,6 +9,8 @@ namespace ContentAPI.Models
     public class BookModel
     {
         [Key]
+        [Required]
+        public int Id { get; set; }
         [Required(ErrorMessage = "Title is necessary")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Gender is necessary")]
@@ -17,6 +19,6 @@ namespace ContentAPI.Models
         public string Writer { get; set; }
         [Range(1, 5000, ErrorMessage = "Max is 5000 pages")]
         public int Pages { get; set; }
-        public int Id { get; set; }
+        
     }
 }

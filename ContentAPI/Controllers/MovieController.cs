@@ -1,4 +1,5 @@
-﻿using ContentAPI.Models;
+﻿using ContentAPI.Data;
+using ContentAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,39 +10,37 @@ using System.Threading.Tasks;
 namespace ContentAPI.Controllers
 {
     [ApiController]
-    [Route("movies")]
+    [Route("movie")]
     public class MovieController : ControllerBase
     {
-        private static int Id;
+        private MovieContext _context;
 
-        private static List<MovieModel> movies = new List<MovieModel>();
-
-        public MovieController()
+        public MovieController(MovieContext context)
         {
-
+            _context = context;
         }
 
         [Route("addMovie")]
         [HttpPost]
         public IActionResult AddMovie([FromBody] MovieModel movie)
         {
-            movie.Id = Id++;
-            movies.Add(movie);
+            _context.Movies.Add(movie);
+            _context.SaveChanges();
             return CreatedAtAction(nameof(getMoviesById), new { Id = movie.Id }, movie);
         }
 
         [Route("getMovies")]
         [HttpGet]
-        public IActionResult GetMovies()
+        public IEnumerable<MovieModel> GetMovies()
         {
-            return Ok(movies);
+            return _context.Movies;
         }
 
         [Route("getMovieById")]
         [HttpGet]
         public IActionResult getMoviesById(int id)
         {
-            MovieModel movie =  movies.FirstOrDefault(movie => movie.Id == id);
+            MovieModel movie =  _context.Movies.FirstOrDefault(movie => movie.Id == id);
             if(movie != null)
             {
                 return Ok(movie);
