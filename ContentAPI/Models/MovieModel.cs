@@ -8,6 +8,7 @@ namespace ContentAPI.Models
 {
     public class MovieModel
     {
+        [Key]
         [Required(ErrorMessage = "Title is necessary")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Gender is necessary")]

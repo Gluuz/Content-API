@@ -13,23 +13,41 @@ namespace ContentAPI.Controllers
     public class MovieController : ControllerBase
     {
         private static int Id;
+
         private static List<MovieModel> movies = new List<MovieModel>();
+
         public MovieController()
         {
 
         }
-        [Route("addMovies")]
+
+        [Route("addMovie")]
         [HttpPost]
-        public void AddMovie([FromBody] MovieModel movie)
+        public IActionResult AddMovie([FromBody] MovieModel movie)
         {
             movie.Id = Id++;
             movies.Add(movie);
+            return CreatedAtAction(nameof(getMoviesById), new { Id = movie.Id }, movie);
         }
+
         [Route("getMovies")]
         [HttpGet]
-        public IEnumerable<MovieModel> GetMovies()
+        public IActionResult GetMovies()
         {
-            return movies;
+            return Ok(movies);
+        }
+
+        [Route("getMovieById")]
+        [HttpGet]
+        public IActionResult getMoviesById(int id)
+        {
+            MovieModel movie =  movies.FirstOrDefault(movie => movie.Id == id);
+            if(movie != null)
+            {
+                return Ok(movie);
+            }
+            return NotFound();
+
         }
     }
 }
