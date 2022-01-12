@@ -1,4 +1,6 @@
-﻿using ContentAPI.Data;
+﻿using AutoMapper;
+using ContentAPI.Data;
+using ContentAPI.Data.Dtos;
 using ContentAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,16 +15,19 @@ namespace ContentAPI.Controllers
     public class BookController : ControllerBase
     {
         private BookContext _context;
+        private IMapper _mapper;
 
-        public BookController(BookContext context)
+        public BookController(BookContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [Route("addBook")]
         [HttpPost]
-        public IActionResult AddBook([FromBody] BookModel book)
+        public IActionResult AddBook([FromBody] BookDTO bookDTO)
         {
+            BookModel book = _mapper.Map<BookModel>(bookDTO);
             _context.Books.Add(book);
             _context.SaveChanges();
             return CreatedAtAction(nameof(getBookById), new { Id = book.Id }, book);
@@ -47,19 +52,16 @@ namespace ContentAPI.Controllers
             return NotFound();
         }
 
-        [Route("refreshBook")]
+        [Route("updateBook")]
         [HttpPut]
-        public IActionResult refreshMovie(int id, [FromBody] BookModel newBook)
+        public IActionResult updateBook(int id, [FromBody] BookDTO bookDTO)
         {
             BookModel book = _context.Books.FirstOrDefault(book => book.Id == id);
             if (book == null)
             {
                 return NotFound();
             }
-            book.Title = newBook.Title;
-            book.Gender = newBook.Gender;
-            book.Writer = newBook.Writer;
-            book.Pages = newBook.Pages;
+            _mapper.Map(bookDTO, book);
             _context.SaveChanges();
             return NoContent();
         }

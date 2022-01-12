@@ -1,4 +1,6 @@
-﻿using ContentAPI.Data;
+﻿using AutoMapper;
+using ContentAPI.Data;
+using ContentAPI.Data.Dtos;
 using ContentAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,16 +16,19 @@ namespace ContentAPI.Controllers
     public class MovieController : ControllerBase
     {
         private MovieContext _context;
+        private IMapper _mapper;
 
-        public MovieController(MovieContext context)
+        public MovieController(MovieContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;   
         }
 
         [Route("addMovie")]
         [HttpPost]
-        public IActionResult addMovie([FromBody] MovieModel movie)
+        public IActionResult addMovie([FromBody] MovieDTO movieDTO)
         {
+            MovieModel movie = _mapper.Map<MovieModel>(movieDTO);
             _context.Movies.Add(movie);
             _context.SaveChanges();
             return CreatedAtAction(nameof(getMoviesById), new { Id = movie.Id }, movie);
@@ -49,19 +54,16 @@ namespace ContentAPI.Controllers
 
         }
 
-        [Route("refreshMovie")]
+        [Route("updateMovie")]
         [HttpPut]
-        public IActionResult refreshMovie(int id, [FromBody]MovieModel newMovie)
+        public IActionResult úpdateMovie(int id, [FromBody]MovieDTO movieDTO)
         {
             MovieModel movie = _context.Movies.FirstOrDefault(movie => movie.Id == id);
             if(movie == null)
             {
                 return NotFound();
             }
-            movie.Title = newMovie.Title;
-            movie.Gender = newMovie.Gender;
-            movie.Director = newMovie.Director;
-            movie.Duration = newMovie.Duration;
+            _mapper.Map(movieDTO, movie);
             _context.SaveChanges();
             return NoContent();
         }
